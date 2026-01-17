@@ -13,9 +13,7 @@ type HeaderSectionProps = {
 export const Header = ({ label }: HeaderProps) => {
   return (
     <div className="w-full flex flex-col gap-y-3">
-      <h1 className="text-4xl font-bold text-black dark:text-white">
-        Selamat Datang!
-      </h1>
+      <h1 className="text-4xl font-bold">Selamat Datang!</h1>
       <p className="text-muted-foreground text-sm">{label}</p>
     </div>
   );
