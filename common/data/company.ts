@@ -33,7 +33,9 @@ export const getJobs = async (userId: string) => {
       id: true,
       jobTitle: true,
       status: true,
+      listingDuration: true,
       createdAt: true,
+      updatedAt: true,
       company: {
         select: {
           name: true,

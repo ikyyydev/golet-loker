@@ -3,6 +3,8 @@ import {
   ChevronDown,
   ListCheckIcon,
   LucideLogOut,
+  Star,
+  User2,
 } from "lucide-react";
 import Link from "next/link";
 import { signOut } from "@/auth";
@@ -23,9 +25,15 @@ interface UserDropdownProps {
   name: string;
   email: string;
   image: string;
+  userIsCompany: boolean;
 }
 
-export const UserDropdown = ({ name, email, image }: UserDropdownProps) => {
+export const UserDropdown = ({
+  name,
+  email,
+  image,
+  userIsCompany,
+}: UserDropdownProps) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -48,10 +56,23 @@ export const UserDropdown = ({ name, email, image }: UserDropdownProps) => {
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem asChild>
-            <Link href={"/saved-job"}>
-              <Bookmark size={16} strokeWidth={2} className="opacity-60" />
-              Disimpan
+            <Link href={"/profile"}>
+              <User2 size={16} strokeWidth={2} className="opacity-60" />
+              Profil
             </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            {userIsCompany ? (
+              <Link href={"/favorite"}>
+                <Star size={16} strokeWidth={2} className="opacity-60" />
+                Favorit
+              </Link>
+            ) : (
+              <Link href={"/saved-job"}>
+                <Bookmark size={16} strokeWidth={2} className="opacity-60" />
+                Disimpan
+              </Link>
+            )}
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
             <Link href={"/my-jobs"}>

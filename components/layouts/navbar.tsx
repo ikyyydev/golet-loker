@@ -42,6 +42,7 @@ const Navbar = async () => {
                 email={session.user.email as string}
                 name={session.user.name as string}
                 image={session.user.image as string}
+                userIsCompany={userIsCompany}
               />
             ) : (
               <div className="hidden lg:flex items-center gap-x-2 ml-2">
