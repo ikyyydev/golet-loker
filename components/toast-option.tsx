@@ -1,10 +1,10 @@
 "use client";
 
-import { CheckCircleIcon, MessageSquareWarningIcon } from "lucide-react";
+import { CheckCircle2, MessageSquareWarningIcon } from "lucide-react";
 import { BsExclamationCircle } from "react-icons/bs";
 
 export const ToastSuccessOption = {
-  icon: <CheckCircleIcon size={24} className="text-green-600" />,
+  icon: <CheckCircle2 size={24} className="text-green-600" />,
   style: { backgroundColor: "#dcfce7", color: "#166534" },
   duration: 3000,
 };

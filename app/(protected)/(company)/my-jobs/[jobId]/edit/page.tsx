@@ -1,16 +1,40 @@
+import { redirect } from "next/navigation";
+
 import { getJobEditData } from "@/common/data/company";
 import { requiredUser } from "@/common/utils/requiredUser";
-import EditJobForm from "../components/edit-job-form";
+import { prismadb } from "@/common/libs/prismadb";
+
+import { BackButton } from "@/components/auth/back-button";
 import Container from "@/components/layouts/container";
 import { HeadingForm } from "@/components/elements/heading-form";
-import { BackButton } from "@/components/auth/back-button";
+
+import EditJobForm from "../components/edit-job-form";
 
 type Params = Promise<{ jobId: string }>;
 
+const JobIsActive = async (jobId: string) => {
+  const jobIsActive = await prismadb.jobPost.findFirst({
+    where: {
+      id: jobId,
+      status: "ACTIVE",
+    },
+  });
+
+  if (jobIsActive) {
+    redirect("/my-jobs");
+  }
+
+  return { error: "Lowongan yang sudah aktif tidak dapat diedit`" };
+};
+
 const EditJobPage = async ({ params }: { params: Params }) => {
   const { jobId } = await params;
+
+  await JobIsActive(jobId);
+
   const user = await requiredUser();
   const data = await getJobEditData(jobId, user.id as string);
+
   return (
     <div className="py-10">
       <Container className="flex flex-col ">

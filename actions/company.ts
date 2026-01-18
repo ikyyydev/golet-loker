@@ -15,13 +15,13 @@ const aj = arcjet
   .withRule(
     shield({
       mode: "LIVE",
-    })
+    }),
   )
   .withRule(
     detectBot({
       allow: [],
       mode: "LIVE",
-    })
+    }),
   );
 
 export const createCompany = async (data: z.infer<typeof companySchema>) => {
@@ -141,7 +141,7 @@ export const unSaveJob = async (saveJobPostId: string) => {
 
 export const editJob = async (
   data: z.infer<typeof jobSchema>,
-  jobId: string
+  jobId: string,
 ) => {
   const user = await requiredUser();
   const req = await request();
@@ -175,6 +175,82 @@ export const editJob = async (
       },
     },
   });
+};
+
+export const changeIsActive = async (jobId: string) => {
+  const session = await requiredUser();
+  const req = await request();
+  const decision = await aj.protect(req);
+
+  if (decision.isDenied()) {
+    throw new Error("Forbidden");
+  }
+
+  const jobIsActive = await prismadb.jobPost.findFirst({
+    where: {
+      id: jobId,
+      company: {
+        userId: session.id,
+      },
+      status: "ACTIVE",
+    },
+  });
+
+  if (jobIsActive) {
+    return { error: "Lowongan sudah aktif" };
+  }
+
+  await prismadb.jobPost.update({
+    where: {
+      id: jobId,
+      company: {
+        userId: session.id,
+      },
+    },
+    data: {
+      status: "ACTIVE",
+    },
+  });
+
+  return { success: "Lowongan berhasil di posting" };
+};
+
+export const changeIsExpired = async (jobId: string) => {
+  const session = await requiredUser();
+  const req = await request();
+  const decision = await aj.protect(req);
+
+  if (decision.isDenied()) {
+    throw new Error("Forbidden");
+  }
+
+  const jobIsExpired = await prismadb.jobPost.findFirst({
+    where: {
+      id: jobId,
+      company: {
+        userId: session.id,
+      },
+      status: "EXPIRED",
+    },
+  });
+
+  if (jobIsExpired) {
+    return { error: "Lowongan sudah berakhir" };
+  }
+
+  await prismadb.jobPost.update({
+    where: {
+      id: jobId,
+      company: {
+        userId: session.id,
+      },
+    },
+    data: {
+      status: "EXPIRED",
+    },
+  });
+
+  return { success: "Lowongan telah di nonaktifkan" };
 };
 
 export const deleteJob = async (jobId: string) => {
