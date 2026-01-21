@@ -77,7 +77,7 @@ export const getJobsIsActive = async ({
 
 export const getJobsIsActiveByJobId = async (
   jobId: string,
-  userId?: string
+  userId?: string,
 ) => {
   const [jobData, savedJob] = await Promise.all([
     await prismadb.jobPost.findUnique({
@@ -86,6 +86,7 @@ export const getJobsIsActiveByJobId = async (
         id: jobId,
       },
       select: {
+        id: true,
         jobTitle: true,
         jobDescription: true,
         sallaryFrom: true,

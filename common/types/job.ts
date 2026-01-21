@@ -2,6 +2,7 @@ import { Session } from "next-auth";
 
 export interface IJobItem {
   data: {
+    id: string;
     jobTitle: string;
     employmentType: string;
     location: string;

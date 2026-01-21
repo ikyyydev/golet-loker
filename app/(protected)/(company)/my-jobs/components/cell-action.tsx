@@ -15,7 +15,7 @@ import { toast } from "sonner";
 
 import { changeIsActive, changeIsExpired, deleteJob } from "@/actions/company";
 import { MyJobsColumn } from "@/common/types/company";
-import { AlertModal } from "@/components/modals/alert-modal";
+import { AlertModal } from "@/components/elements/modals/alert-modal";
 import {
   ToastErrorOption,
   ToastSuccessOption,

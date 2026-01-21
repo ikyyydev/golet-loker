@@ -2,25 +2,24 @@
 
 import { useEffect, useState } from "react";
 
-import { Button } from "../ui/button";
-import { Modal } from "../elements/modal";
+import { Modal } from "../modal";
+import { Separator } from "@/components/ui/separator";
 
-interface AlertModalProps {
+interface ApplyJobModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onConfirm: () => void;
-  loading: boolean;
+  loading?: boolean;
   title: string;
   description?: string;
+  children: React.ReactNode;
 }
 
-export const AlertModal: React.FC<AlertModalProps> = ({
+export const ApplyJobModal: React.FC<ApplyJobModalProps> = ({
   isOpen,
   onClose,
-  onConfirm,
-  loading,
   title,
   description,
+  children,
 }) => {
   const [isMounted, setIsMounted] = useState(false);
 
@@ -40,14 +39,8 @@ export const AlertModal: React.FC<AlertModalProps> = ({
       onClose={onClose}
       isOpen={isOpen}
     >
-      <div className="pt-6 space-x-2 flex items-center justify-end w-full">
-        <Button variant={"outline"} disabled={loading} onClick={onClose}>
-          Batal
-        </Button>
-        <Button variant={"destructive"} disabled={loading} onClick={onConfirm}>
-          Konfirmasi
-        </Button>
-      </div>
+      <Separator className="mb-5" />
+      <div>{children}</div>
     </Modal>
   );
 };

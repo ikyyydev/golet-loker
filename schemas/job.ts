@@ -24,3 +24,8 @@ export const searchSchema = z.object({
   search: z.string().optional(),
   location: z.string().optional(),
 });
+
+export const jobApplicationSchema = z.object({
+  coverLetter: z.string().optional(),
+  resume: z.string().min(1, "Resume / CV wajib diisi"),
+});

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ChevronRight, Handshake, MapPin } from "lucide-react";
+import { ChevronRight, MapPin } from "lucide-react";
 import Image from "next/image";
 
 import { saveJob, unSaveJob } from "@/actions/company";
@@ -19,14 +19,18 @@ import { JsonToHtml } from "@/components/ui/json-to-html";
 import { Separator } from "@/components/ui/separator";
 import { SaveJobButton } from "@/components/ui/submit-buton";
 import { IJobItem } from "@/common/types/job";
+import { ApplyJobCard } from "./apply-job-card";
+import { jobIsApplied } from "@/common/data/jobseeker";
 
-export const JobDetail = ({
+export const JobDetail = async ({
   data,
   savedJob,
   jobId,
   isCompany,
   session,
 }: IJobItem) => {
+  const isApplied = await jobIsApplied(jobId, session?.user.id as string);
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
       {/* Left Content */}
@@ -76,7 +80,7 @@ export const JobDetail = ({
                   variant={isOffered ? "default" : "outline"}
                   className={cn(
                     !isOffered ? "opacity-75 cursor-not-allowed" : "",
-                    "text-sm px-4 py-1.5 rounded-full"
+                    "text-sm px-4 py-1.5 rounded-full",
                   )}
                 >
                   <span className="flex items-center gap-2">
@@ -147,7 +151,7 @@ export const JobDetail = ({
                 <p className="text-sm text-muted-foreground">
                   {new Date(
                     (data?.createdAt?.getTime() ?? 0) +
-                      (data?.listingDuration ?? 0) * 24 * 60 * 60 * 1000
+                      (data?.listingDuration ?? 0) * 24 * 60 * 60 * 1000,
                   ).toLocaleDateString("id-ID", {
                     day: "numeric",
                     month: "long",
@@ -199,25 +203,7 @@ export const JobDetail = ({
           </div>
         </Card>
         {!isCompany && session?.user.id && (
-          <Card>
-            <div className="space-y-3">
-              <CardHeader>
-                <CardTitle className="font-semibold">Lamar Sekarang</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-muted-foreground mt-1">
-                  Klik tombol di bawah untuk mengajukan lamaran dan beri tahu{" "}
-                  {data?.company?.name} bahwa kamu siap bergabung.
-                </p>
-              </CardContent>
-              <CardFooter className="grid grid-cols-1">
-                <Button size={"lg"} className="cursor-pointer w-full">
-                  <Handshake className="size-4" />
-                  Lamar Mudah
-                </Button>
-              </CardFooter>
-            </div>
-          </Card>
+          <ApplyJobCard data={data} isApplied={isApplied} />
         )}
       </div>
     </div>

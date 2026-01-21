@@ -21,7 +21,7 @@ const aj = arcjet.withRule(
   detectBot({
     mode: "LIVE",
     allow: ["CATEGORY:SEARCH_ENGINE", "CATEGORY:PREVIEW"],
-  })
+  }),
 );
 
 const getClient = (session: boolean) => {
@@ -32,7 +32,7 @@ const getClient = (session: boolean) => {
         capacity: 100,
         interval: 60,
         refillRate: 30,
-      })
+      }),
     );
   } else {
     return aj.withRule(
@@ -41,7 +41,7 @@ const getClient = (session: boolean) => {
         capacity: 100,
         interval: 60,
         refillRate: 10,
-      })
+      }),
     );
   }
 };
@@ -83,7 +83,7 @@ export default async function JobIdPage({ params }: { params: Params }) {
 
   const { jobData: data, savedJob } = await getJobsIsActiveByJobId(
     jobId,
-    session?.user.id
+    session?.user.id,
   );
   return (
     <Container className="py-10 md:py-16">
